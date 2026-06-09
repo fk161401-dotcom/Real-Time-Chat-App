@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Multi-Step Form</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Smooth Custom Transitions */
+        .step-content {
+            transition: all 0.4s ease-in-out;
+            opacity: 0;
+            transform: translateX(20px);
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        /* Input focus outline styles to match the image */
+        .input-field:focus {
+            outline: 2px solid #2563eb;
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+
+    <!-- Main Outer Container -->
+    <div class="w-full max-w-4xl bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+        
+        <!-- 1. Top Section: Progress Bar (Matches Image Header) -->
+        <div class="bg-slate-900/5 backdrop-blur-sm p-6 border-b border-slate-200">
+            <div class="flex items-center justify-between max-w-2xl mx-auto relative">
+                <!-- Progress Line Behind -->
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 rounded z-0"></div>
+                <div id="progress-line" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-emerald-500 rounded z-0 transition-all duration-500" style="width: 0%;"></div>
+
+                <!-- Step 1 Indicator -->
+                <div class="step-indicator z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 transition-all duration-300" data-step="1">
+                    <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold"><i class="fas fa-check text-[10px]"></i></span>
+                    <span class="text-sm font-semibold text-slate-700">1. Account Setup</span>
+                </div>
+
+                <!-- Step 2 Indicator -->
+                <div class="step-indicator z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 transition-all duration-300 opacity-60" data-step="2">
+                    <span class="circle-num w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">2</span>
+                    <span class="text-sm font-semibold text-slate-500">2. Profile Info</span>
+                </div>
+
+                <!-- Step 3 Indicator -->
+                <div class="step-indicator z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 transition-all duration-300 opacity-60" data-step="3">
+                    <span class="circle-num w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">3</span>
+                    <span class="text-sm font-semibold text-slate-500">3. Summary & Submit</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Form Body -->
+        <form id="multiStepForm" novalidate>
+            <div class="grid grid-cols-1 md:grid-cols-3 min-h-[450px]">
+                
+                <!-- Left Sidebar Decoration (Matches the Avatar Layout in image) -->
+                <div class="bg-slate-50 p-8 flex flex-col items-center justify-center border-r border-slate-100 hidden md:flex">
+                    <div class="w-28 h-28 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 mb-4 shadow-inner">
+                        <i class="fas fa-user text-5xl"></i>
+                    </div>
+                    <div class="h-4 w-32 bg-slate-200 rounded-full mb-2"></div>
+                    <div class="h-3 w-24 bg-slate-100 rounded-full"></div>
+                </div>
+
+                <!-- Right Content Area (Steps Input) -->
+                <div class="col-span-2 p-8 flex flex-col justify-between">
+                    
+                    <div>
+                        <!-- STEP 1: Account Setup -->
+                        <div id="step-1" class="step-content active">
+                            <h2 class="text-2xl font-bold text-slate-800 mb-1">Create Your Account</h2>
+                            <p class="text-sm text-slate-500 mb-6">Please enter your basic account credentials.</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Username *</label>
+                                    <div class="relative">
+                                        <i class="fas fa-at absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="text" id="username" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="johndoe">
+                                    </div>
+                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Username is required</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address *</label>
+                                    <div class="relative">
+                                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="email" id="email" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="name@example.com">
+                                    </div>
+                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Please enter a valid email address</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: Profile Info (Exactly as structured in image) -->
+                        <div id="step-2" class="step-content">
+                            <h2 class="text-2xl font-bold text-slate-800 mb-1">Create Your Account</h2>
+                            <p class="text-sm text-slate-500 mb-4">Step 2: Profile Info</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name *</label>
+                                    <div class="relative">
+                                        <i class="fas fa-user-circle absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="text" id="fullname" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="Mame Smith">
+                                    </div>
+                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Full name is required</p>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Birthday *</label>
+                                    <div class="relative">
+                                        <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="date" id="birthday" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors">
+                                    </div>
+                                    <!-- Dynamic Success State Indicator from Image -->
+                                    <p id="birthday-valid" class="text-xs text-emerald-600 mt-1 hidden"><i class="fas fa-check-circle mr-1"></i> Filled and valid</p>
+                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Birthday is required</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label>
+                                    <div class="relative">
+                                        <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="tel" id="phone" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="123-456-7799">
+                                    </div>
+                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Phone number is required</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Occupation *</label>
+                                    <div class="relative">
+                                        <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                        <input type="text" id="occupation" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="Occupation">
+                                    </div>
+                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Occupation is required</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-slate-700 mb-1">City *</label>
+                                <div class="relative">
+                                    <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                    <select id="city" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors appearance-none bg-white">
+                                        <option value="">City</option>
+                                        <option value="Quetta">Quetta</option>
+                                        <option value="Karachi">Karachi</option>
+                                        <option value="Lahore">Lahore</option>
+                                        <option value="Islamabad">Islamabad</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                                </div>
+                                <p class="error-msg text-xs text-red-500 mt-1 hidden">Please select a city</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Bio</label>
+                                <textarea id="bio" rows="2" class="input-field w-full p-3 rounded-xl border border-slate-300 text-slate-800 transition-colors resize-none" placeholder="Write your profile bio here..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3: Summary Display -->
+                        <div id="step-3" class="step-content">
+                            <h2 class="text-2xl font-bold text-slate-800 mb-1">Review Your Details</h2>
+                            <p class="text-sm text-slate-500 mb-6">Double check your information before submitting.</p>
+                            
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-sm text-slate-700" id="summary-container">
+                                <!-- JavaScript will inject summary details here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Controls (Autosave text & Navigation buttons) -->
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-6 mt-6">
+                        <!-- Autosave Indicator (Matches Image bottom text) -->
+                        <div class="flex items-center gap-2 text-xs text-slate-500">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span id="autosave-status">Draft saved locally</span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-3">
+                            <button type="button" id="prevBtn" class="px-5 py-2 rounded-xl border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors hidden flex items-center gap-2">
+                                <i class="fas fa-arrow-left text-xs"></i> Back
+                            </button>
+                            <button type="button" id="nextBtn" class="px-5 py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm">
+                                Next <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript Logic handles Form Management -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        // Form elements
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const autosaveStatus = document.getElementById('autosave-status');
+        const birthdayInput = document.getElementById('birthday');
+        const birthdayValid = document.getElementById('birthday-valid');
+
+        // Input Fields arrays per step for selective validation
+        const stepFields = {
+            1: ['username', 'email'],
+            2: ['fullname', 'birthday', 'phone', 'occupation', 'city']
+        };
+
+        // Initialize Form
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedProgress();
+            updateStepUI();
+        });
+
+        // Track Birthday input specifically to match picture green status feedback
+        birthdayInput.addEventListener('input', () => {
+            if(birthdayInput.value) {
+                birthdayValid.classList.remove('hidden');
+            } else {
+                birthdayValid.classList.add('hidden');
+            }
+        });
+
+        // Main Navigation Event Listeners
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    if(currentStep === 3) generateSummary();
+                    updateStepUI();
+                    saveProgress();
+                }
+            } else {
+                // Final submission handling
+                alert('🚀 Form Submitted Successfully! Clearing local draft.');
+                localStorage.removeItem('multiStepFormDraft');
+                location.reload();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepUI();
+            }
+        });
+
+        // Step Validation Logic
+        function validateStep(step) {
+            let isValid = true;
+            const fields = stepFields[step];
+            if (!fields) return true;
+
+            fields.forEach(fieldId => {
+                const input = document.getElementById(fieldId);
+                const errorMsg = input.closest('div').parentElement.querySelector('.error-msg');
+                
+                // Reset states
+                input.classList.remove('border-red-400', 'bg-red-50/50');
+                if(errorMsg) errorMsg.classList.add('hidden');
+
+                // Basic validation rule checking
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    isValid = false;
+                    showFieldError(input, errorMsg);
+                } else if (input.type === 'email' && input.value) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(input.value)) {
+                        isValid = false;
+                        showFieldError(input, errorMsg);
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        function showFieldError(input, errorMsg) {
+            // Apply visual error style matching the image's "Occupation" field error mode
+            input.classList.add('border-red-400', 'bg-red-50/50');
+            if(errorMsg) errorMsg.classList.remove('hidden');
+            
+            // Add a swift error vibration layout animation effect
+            input.closest('.step-content').classList.add('animate-shake');
+            setTimeout(() => input.closest('.step-content').classList.remove('animate-shake'), 400);
+        }
+
+        // Render Summary Step Dynamically
+        function generateSummary() {
+            const container = document.getElementById('summary-container');
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-2 border-b border-slate-200 pb-2">
+                    <span class="font-semibold text-slate-500">Username:</span> <span class="text-slate-800">${document.getElementById('username').value}</span>
+                    <span class="font-semibold text-slate-500">Email:</span> <span class="text-slate-800">${document.getElementById('email').value}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <span class="font-semibold text-slate-500">Full Name:</span> <span class="text-slate-800">${document.getElementById('fullname').value}</span>
+                    <span class="font-semibold text-slate-500">Birthday:</span> <span class="text-slate-800">${document.getElementById('birthday').value}</span>
+                    <span class="font-semibold text-slate-500">Phone:</span> <span class="text-slate-800">${document.getElementById('phone').value}</span>
+                    <span class="font-semibold text-slate-500">Occupation:</span> <span class="text-slate-800">${document.getElementById('occupation').value}</span>
+                    <span class="font-semibold text-slate-500">City:</span> <span class="text-slate-800">${document.getElementById('city').value}</span>
+                    <span class="font-semibold text-slate-500">Bio:</span> <span class="text-slate-800">${document.getElementById('bio').value || 'N/A'}</span>
+                </div>
+            `;
+        }
+
+        // Update Steps Visibility and Header Progress state representation
+        function updateStepUI() {
+            // Content management visibility switching
+            document.querySelectorAll('.step-content').forEach((content, index) => {
+                if (index + 1 === currentStep) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+
+            // Action Button modifications
+            if (currentStep === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+
+            if (currentStep === totalSteps) {
+                nextBtn.innerHTML = 'Submit 🚀';
+                nextBtn.classList.replace('bg-blue-600', 'bg-emerald-600');
+                nextBtn.classList.replace('hover:bg-blue-700', 'hover:bg-emerald-700');
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right text-xs"></i>';
+                nextBtn.classList.replace('bg-emerald-600', 'bg-blue-600');
+                nextBtn.classList.replace('hover:bg-emerald-700', 'hover:bg-blue-700');
+            }
+
+            // Top Header Visual States Progression handling
+            const indicators = document.querySelectorAll('.step-indicator');
+            indicators.forEach((indicator, index) => {
+                const stepNum = index + 1;
+                const circle = indicator.querySelector('.circle-num');
+                
+                if (stepNum < currentStep) {
+                    // Complete state styling
+                    indicator.classList.remove('opacity-60');
+                    indicator.innerHTML = `<span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold"><i class="fas fa-check text-[10px]"></i></span>` + indicator.innerHTML.substring(indicator.innerHTML.indexOf('</span>') + 7);
+                } else if (stepNum === currentStep) {
+                    // Current step active indicator
+                    indicator.classList.remove('opacity-60');
+                    indicator.classList.add('border-blue-500', 'ring-2', 'ring-blue-100');
+                } else {
+                    // Locked future steps styling
+                    indicator.classList.add('opacity-60');
+                    indicator.classList.remove('border-blue-500', 'ring-2', 'ring-blue-100');
+                }
+            });
+
+            // Set progress indicator filler line
+            const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progress-line').style.width = `${progressPercent}%`;
+        }
+
+        // Autosave Feature Implementation using LocalStorage
+        const allInputs = document.querySelectorAll('.input-field');
+        allInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                saveProgress();
+            });
+        });
+
+        function saveProgress() {
+            const formData = {};
+            allInputs.forEach(input => {
+                formData[input.id] = input.value;
+            });
+            formData['currentStep'] = currentStep;
+
+            localStorage.setItem('multiStepFormDraft', JSON.stringify(formData));
+            
+            // Render exact dynamic saved time notation string matching the bottom footer info reference
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            autosaveStatus.textContent = `Draft saved locally at ${timeString}`;
+        }
+
+        function loadSavedProgress() {
+            const savedData = localStorage.getItem('multiStepFormDraft');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                allInputs.forEach(input => {
+                    if (formData[input.id] !== undefined) {
+                        input.value = formData[input.id];
+                    }
+                });
+                if(formData['currentStep']) {
+                    currentStep = formData['currentStep'];
+                }
+                // Check birthday state indicator status upon loading page data 
+                if(birthdayInput.value) {
+                    birthdayValid.classList.remove('hidden');
+                }
+                autosaveStatus.textContent = `Loaded draft progress securely`;
+            }
+        }
+    </script>
+
+    <!-- Tailwind Shake Animation injection styling configuration plugin setup -->
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        .animate-shake {
+            animation: shake 0.3s ease-in-out infinite;
+        }
+    </style>
+</body>
+</html>
