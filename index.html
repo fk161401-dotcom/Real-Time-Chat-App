@@ -3,433 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Multi-Step Form</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Professional Drag & Drop File Uploader</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Smooth Custom Transitions */
-        .step-content {
-            transition: all 0.4s ease-in-out;
-            opacity: 0;
-            transform: translateX(20px);
-            display: none;
+        /* Glassmorphism & Custom Neon Styling */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            min-height: 100vh;
         }
-        .step-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateX(0);
+        .glass-card {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Input focus outline styles to match the image */
-        .input-field:focus {
-            outline: 2px solid #2563eb;
-            border-color: transparent;
+        .drop-zone.active {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 antialiased">
+<body class="text-slate-200 font-sans p-4 md:p-8 flex items-center justify-center">
 
-    <!-- Main Outer Container -->
-    <div class="w-full max-w-4xl bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
-        
-        <!-- 1. Top Section: Progress Bar (Matches Image Header) -->
-        <div class="bg-slate-900/5 backdrop-blur-sm p-6 border-b border-slate-200">
-            <div class="flex items-center justify-between max-w-2xl mx-auto relative">
-                <!-- Progress Line Behind -->
-                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 rounded z-0"></div>
-                <div id="progress-line" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-emerald-500 rounded z-0 transition-all duration-500" style="width: 0%;"></div>
-
-                <!-- Step 1 Indicator -->
-                <div class="step-indicator z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 transition-all duration-300" data-step="1">
-                    <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold"><i class="fas fa-check text-[10px]"></i></span>
-                    <span class="text-sm font-semibold text-slate-700">1. Account Setup</span>
-                </div>
-
-                <!-- Step 2 Indicator -->
-                <div class="step-indicator z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 transition-all duration-300 opacity-60" data-step="2">
-                    <span class="circle-num w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">2</span>
-                    <span class="text-sm font-semibold text-slate-500">2. Profile Info</span>
-                </div>
-
-                <!-- Step 3 Indicator -->
-                <div class="step-indicator z-10 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 transition-all duration-300 opacity-60" data-step="3">
-                    <span class="circle-num w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">3</span>
-                    <span class="text-sm font-semibold text-slate-500">3. Summary & Submit</span>
-                </div>
+    <div class="w-full max-w-6xl glass-card rounded-2xl shadow-2xl p-6 md:p-8">
+        <!-- Header -->
+        <div class="flex items-center gap-3 mb-8 border-b border-slate-700/50 pb-4">
+            <div class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-lg text-xl">
+                <i class="fa-solid fa-square-poll-horizontal"></i>
             </div>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-wide bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                Drag-and-Drop File Uploader UI
+            </h1>
         </div>
 
-        <!-- Main Form Body -->
-        <form id="multiStepForm" novalidate>
-            <div class="grid grid-cols-1 md:grid-cols-3 min-h-[450px]">
-                
-                <!-- Left Sidebar Decoration (Matches the Avatar Layout in image) -->
-                <div class="bg-slate-50 p-8 flex flex-col items-center justify-center border-r border-slate-100 hidden md:flex">
-                    <div class="w-28 h-28 bg-slate-200 rounded-full flex items-center justify-center text-slate-400 mb-4 shadow-inner">
-                        <i class="fas fa-user text-5xl"></i>
-                    </div>
-                    <div class="h-4 w-32 bg-slate-200 rounded-full mb-2"></div>
-                    <div class="h-3 w-24 bg-slate-100 rounded-full"></div>
+        <!-- Main Responsive Grid Layout (Matches Diagram 1, 2, 3) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- 1. INPUT AREA (THE DROP ZONE) -->
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-2 text-sm font-semibold tracking-wider text-slate-400 uppercase">
+                    <span class="bg-slate-700 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">1</span>
+                    Input Area
                 </div>
-
-                <!-- Right Content Area (Steps Input) -->
-                <div class="col-span-2 p-8 flex flex-col justify-between">
-                    
-                    <div>
-                        <!-- STEP 1: Account Setup -->
-                        <div id="step-1" class="step-content active">
-                            <h2 class="text-2xl font-bold text-slate-800 mb-1">Create Your Account</h2>
-                            <p class="text-sm text-slate-500 mb-6">Please enter your basic account credentials.</p>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Username *</label>
-                                    <div class="relative">
-                                        <i class="fas fa-at absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                        <input type="text" id="username" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="johndoe">
-                                    </div>
-                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Username is required</p>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Email Address *</label>
-                                    <div class="relative">
-                                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                        <input type="email" id="email" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="name@example.com">
-                                    </div>
-                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Please enter a valid email address</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- STEP 2: Profile Info (Exactly as structured in image) -->
-                        <div id="step-2" class="step-content">
-                            <h2 class="text-2xl font-bold text-slate-800 mb-1">Create Your Account</h2>
-                            <p class="text-sm text-slate-500 mb-4">Step 2: Profile Info</p>
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Full Name *</label>
-                                    <div class="relative">
-                                        <i class="fas fa-user-circle absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                        <input type="text" id="fullname" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="Mame Smith">
-                                    </div>
-                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Full name is required</p>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Birthday *</label>
-                                    <div class="relative">
-                                        <i class="fas fa-calendar absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                        <input type="date" id="birthday" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors">
-                                    </div>
-                                    <!-- Dynamic Success State Indicator from Image -->
-                                    <p id="birthday-valid" class="text-xs text-emerald-600 mt-1 hidden"><i class="fas fa-check-circle mr-1"></i> Filled and valid</p>
-                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Birthday is required</p>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label>
-                                    <div class="relative">
-                                        <i class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                        <input type="tel" id="phone" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="123-456-7799">
-                                    </div>
-                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Phone number is required</p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Occupation *</label>
-                                    <div class="relative">
-                                        <i class="fas fa-briefcase absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                        <input type="text" id="occupation" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors" placeholder="Occupation">
-                                    </div>
-                                    <p class="error-msg text-xs text-red-500 mt-1 hidden">Occupation is required</p>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-slate-700 mb-1">City *</label>
-                                <div class="relative">
-                                    <i class="fas fa-map-marker-alt absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                                    <select id="city" required class="input-field w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-800 transition-colors appearance-none bg-white">
-                                        <option value="">City</option>
-                                        <option value="Quetta">Quetta</option>
-                                        <option value="Karachi">Karachi</option>
-                                        <option value="Lahore">Lahore</option>
-                                        <option value="Islamabad">Islamabad</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
-                                </div>
-                                <p class="error-msg text-xs text-red-500 mt-1 hidden">Please select a city</p>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700 mb-1">Bio</label>
-                                <textarea id="bio" rows="2" class="input-field w-full p-3 rounded-xl border border-slate-300 text-slate-800 transition-colors resize-none" placeholder="Write your profile bio here..."></textarea>
-                            </div>
-                        </div>
-
-                        <!-- STEP 3: Summary Display -->
-                        <div id="step-3" class="step-content">
-                            <h2 class="text-2xl font-bold text-slate-800 mb-1">Review Your Details</h2>
-                            <p class="text-sm text-slate-500 mb-6">Double check your information before submitting.</p>
-                            
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-sm text-slate-700" id="summary-container">
-                                <!-- JavaScript will inject summary details here dynamically -->
-                            </div>
-                        </div>
+                
+                <!-- Drop Zone Container -->
+                <div id="dropZone" class="drop-zone border-2 border-dashed border-slate-600 hover:border-indigo-400 transition-all duration-300 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer min-h-[280px] bg-slate-800/20 group">
+                    <input type="file" id="fileInput" accept="image/png, image/jpeg, image/gif" class="hidden">
+                    <div class="p-4 bg-slate-800/80 rounded-full text-slate-400 group-hover:text-indigo-400 group-hover:scale-110 transition-all duration-300 mb-4 shadow-lg">
+                        <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
                     </div>
-
-                    <!-- Footer Controls (Autosave text & Navigation buttons) -->
-                    <div class="flex items-center justify-between border-t border-slate-100 pt-6 mt-6">
-                        <!-- Autosave Indicator (Matches Image bottom text) -->
-                        <div class="flex items-center gap-2 text-xs text-slate-500">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span id="autosave-status">Draft saved locally</span>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="flex gap-3">
-                            <button type="button" id="prevBtn" class="px-5 py-2 rounded-xl border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors hidden flex items-center gap-2">
-                                <i class="fas fa-arrow-left text-xs"></i> Back
-                            </button>
-                            <button type="button" id="nextBtn" class="px-5 py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm">
-                                Next <i class="fas fa-arrow-right text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
-
+                    <p class="text-base font-medium text-slate-300">
+                        Drag & drop images here or <span class="text-indigo-400 underline group-hover:text-indigo-300">browse</span>
+                    </p>
+                    <p class="text-xs text-slate-500 mt-2">Supports JPG, PNG, GIF up to 5MB</p>
+                </div>
+                
+                <!-- Manual Selection Tag Indicator -->
+                <div class="bg-slate-900/60 border border-slate-800 rounded-lg p-3 text-xs text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-terminal text-indigo-400"></i>
+                    <span>Status: Ready for manual selection or drop</span>
                 </div>
             </div>
-        </form>
+
+            <!-- 2. UPLOAD & PREVIEW MECHANICS -->
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-2 text-sm font-semibold tracking-wider text-slate-400 uppercase">
+                    <span class="bg-slate-700 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">2</span>
+                    Upload & Mechanics
+                </div>
+
+                <div class="bg-slate-900/40 border border-slate-800/80 rounded-xl p-5 flex flex-col gap-4 min-h-[340px]">
+                    <!-- Error Message Container (Hidden by default) -->
+                    <div id="errorBox" class="hidden bg-rose-500/10 border border-rose-500/30 text-rose-400 p-3.5 rounded-lg text-xs flex items-center justify-between animate-fade-in">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            <span id="errorText">Invalid file type! Only JPG, PNG, GIF are allowed!</span>
+                        </div>
+                        <button onclick="closeError()" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <!-- Progress Simulation Area -->
+                    <div id="progressArea" class="hidden flex flex-col gap-2 bg-slate-800/30 border border-slate-700/30 p-4 rounded-xl">
+                        <div class="flex justify-between items-center text-xs">
+                            <span id="uploadFileName" class="text-slate-300 truncate max-w-[180px]">file_name.jpg</span>
+                            <span id="progressPercent" class="text-indigo-400 font-medium">Uploading... 0%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div id="progressBarFill" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full w-0 transition-all duration-100 ease-out"></div>
+                        </div>
+                    </div>
+
+                    <!-- Live Image Preview Card -->
+                    <div id="previewArea" class="hidden flex flex-col gap-2">
+                        <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-wand-magic-sparkles text-emerald-400 mr-1"></i> FileReader API Preview:</span>
+                        <div class="relative group overflow-hidden rounded-xl border border-slate-700 bg-slate-950 flex items-center justify-center h-40">
+                            <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-emerald-950/40 backdrop-blur-xs flex items-center justify-center text-emerald-400 font-medium text-sm gap-2">
+                                <i class="fa-solid fa-circle-check text-lg"></i> 100% Success
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder when empty -->
+                    <div id="mechanicsPlaceholder" class="flex-1 flex flex-col items-center justify-center text-slate-500 text-xs text-center border border-dashed border-slate-800 rounded-xl p-4">
+                        <i class="fa-solid fa-gears text-2xl mb-2 opacity-40"></i>
+                        <span>No upload active. Drag a file or browse to see validation & FileReader mechanics.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. DATA PERSISTENCE & STORAGE (GALLERY) -->
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-2 text-sm font-semibold tracking-wider text-slate-400 uppercase">
+                    <span class="bg-slate-700 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs">3</span>
+                    Data Persistence
+                </div>
+
+                <div class="bg-slate-900/40 border border-slate-800/80 rounded-xl p-5 flex flex-col gap-4 min-h-[340px]">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase"><i class="fa-solid fa-database text-indigo-400 mr-1"></i> LocalStorage Gallery</span>
+                        <button onclick="clearAllPhotos()" class="text-[10px] text-slate-500 hover:text-rose-400 uppercase tracking-widest font-bold"><i class="fa-solid fa-trash-can mr-1"></i> Clear All</button>
+                    </div>
+
+                    <!-- Gallery Grid -->
+                    <div id="galleryGrid" class="grid grid-cols-3 gap-3 overflow-y-auto max-h-[250px] pr-1">
+                        <!-- Dynamic items from localStorage inject here -->
+                    </div>
+
+                    <!-- Placeholder when gallery is empty -->
+                    <div id="galleryPlaceholder" class="hidden flex-1 flex flex-col items-center justify-center text-slate-500 text-xs text-center p-4">
+                        <i class="fa-solid fa-images text-2xl mb-2 opacity-40"></i>
+                        <span>LocalStorage is empty.<br>Completed uploads will persist here on page refresh.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <!-- JavaScript Logic handles Form Management -->
+    <!-- JavaScript logic -->
     <script>
-        let currentStep = 1;
-        const totalSteps = 3;
+        // DOM Elements
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const errorBox = document.getElementById('errorBox');
+        const errorText = document.getElementById('errorText');
+        const progressArea = document.getElementById('progressArea');
+        const progressPercent = document.getElementById('progressPercent');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const uploadFileName = document.getElementById('uploadFileName');
+        const previewArea = document.getElementById('previewArea');
+        const imagePreview = document.getElementById('imagePreview');
+        const mechanicsPlaceholder = document.getElementById('mechanicsPlaceholder');
+        const galleryGrid = document.getElementById('galleryGrid');
+        const galleryPlaceholder = document.getElementById('galleryPlaceholder');
 
-        // Form elements
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const autosaveStatus = document.getElementById('autosave-status');
-        const birthdayInput = document.getElementById('birthday');
-        const birthdayValid = document.getElementById('birthday-valid');
+        // Allowed Image Types
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-        // Input Fields arrays per step for selective validation
-        const stepFields = {
-            1: ['username', 'email'],
-            2: ['fullname', 'birthday', 'phone', 'occupation', 'city']
-        };
+        // Core Event Listeners
+        dropZone.addEventListener('click', () => fileInput.click());
 
-        // Initialize Form
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSavedProgress();
-            updateStepUI();
+        // Drag and Drop Core Logic (HTML5 Drag & Drop API)
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('active');
+            }, false);
         });
 
-        // Track Birthday input specifically to match picture green status feedback
-        birthdayInput.addEventListener('input', () => {
-            if(birthdayInput.value) {
-                birthdayValid.classList.remove('hidden');
-            } else {
-                birthdayValid.classList.add('hidden');
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('active');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                handleFileSelection(files[0]);
             }
         });
 
-        // Main Navigation Event Listeners
-        nextBtn.addEventListener('click', () => {
-            if (currentStep < totalSteps) {
-                if (validateStep(currentStep)) {
-                    currentStep++;
-                    if(currentStep === 3) generateSummary();
-                    updateStepUI();
-                    saveProgress();
-                }
-            } else {
-                // Final submission handling
-                alert('🚀 Form Submitted Successfully! Clearing local draft.');
-                localStorage.removeItem('multiStepFormDraft');
-                location.reload();
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelection(e.target.files[0]);
             }
         });
 
-        prevBtn.addEventListener('click', () => {
-            if (currentStep > 1) {
-                currentStep--;
-                updateStepUI();
+        // Validation & File Processor
+        function handleFileSelection(file) {
+            // Reset states
+            hideError();
+            previewArea.classList.add('hidden');
+            mechanicsPlaceholder.classList.add('hidden');
+
+            // 1. Validation Logic
+            if (!allowedTypes.includes(file.type)) {
+                showError("❌ Invalid file type. Only JPG, PNG, GIF are allowed!");
+                mechanicsPlaceholder.classList.remove('hidden');
+                progressArea.classList.add('hidden');
+                return;
             }
-        });
 
-        // Step Validation Logic
-        function validateStep(step) {
-            let isValid = true;
-            const fields = stepFields[step];
-            if (!fields) return true;
-
-            fields.forEach(fieldId => {
-                const input = document.getElementById(fieldId);
-                const errorMsg = input.closest('div').parentElement.querySelector('.error-msg');
-                
-                // Reset states
-                input.classList.remove('border-red-400', 'bg-red-50/50');
-                if(errorMsg) errorMsg.classList.add('hidden');
-
-                // Basic validation rule checking
-                if (input.hasAttribute('required') && !input.value.trim()) {
-                    isValid = false;
-                    showFieldError(input, errorMsg);
-                } else if (input.type === 'email' && input.value) {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(input.value)) {
-                        isValid = false;
-                        showFieldError(input, errorMsg);
-                    }
-                }
-            });
-
-            return isValid;
-        }
-
-        function showFieldError(input, errorMsg) {
-            // Apply visual error style matching the image's "Occupation" field error mode
-            input.classList.add('border-red-400', 'bg-red-50/50');
-            if(errorMsg) errorMsg.classList.remove('hidden');
+            // Setup Simulation UI
+            progressArea.classList.remove('hidden');
+            uploadFileName.textContent = file.name;
             
-            // Add a swift error vibration layout animation effect
-            input.closest('.step-content').classList.add('animate-shake');
-            setTimeout(() => input.closest('.step-content').classList.remove('animate-shake'), 400);
-        }
+            // 2. Simulate Upload Progress via setTimeout
+            simulateProgress(() => {
+                // 3. Process image with FileReader API upon upload completion
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = () => {
+                    const base64Image = reader.result;
+                    
+                    // Show Preview UI
+                    imagePreview.src = base64Image;
+                    previewArea.classList.remove('hidden');
 
-        // Render Summary Step Dynamically
-        function generateSummary() {
-            const container = document.getElementById('summary-container');
-            container.innerHTML = `
-                <div class="grid grid-cols-2 gap-2 border-b border-slate-200 pb-2">
-                    <span class="font-semibold text-slate-500">Username:</span> <span class="text-slate-800">${document.getElementById('username').value}</span>
-                    <span class="font-semibold text-slate-500">Email:</span> <span class="text-slate-800">${document.getElementById('email').value}</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2 pt-1">
-                    <span class="font-semibold text-slate-500">Full Name:</span> <span class="text-slate-800">${document.getElementById('fullname').value}</span>
-                    <span class="font-semibold text-slate-500">Birthday:</span> <span class="text-slate-800">${document.getElementById('birthday').value}</span>
-                    <span class="font-semibold text-slate-500">Phone:</span> <span class="text-slate-800">${document.getElementById('phone').value}</span>
-                    <span class="font-semibold text-slate-500">Occupation:</span> <span class="text-slate-800">${document.getElementById('occupation').value}</span>
-                    <span class="font-semibold text-slate-500">City:</span> <span class="text-slate-800">${document.getElementById('city').value}</span>
-                    <span class="font-semibold text-slate-500">Bio:</span> <span class="text-slate-800">${document.getElementById('bio').value || 'N/A'}</span>
-                </div>
-            `;
-        }
-
-        // Update Steps Visibility and Header Progress state representation
-        function updateStepUI() {
-            // Content management visibility switching
-            document.querySelectorAll('.step-content').forEach((content, index) => {
-                if (index + 1 === currentStep) {
-                    content.classList.add('active');
-                } else {
-                    content.classList.remove('active');
-                }
+                    // 4. Save to Storage & Persistence Block
+                    saveToLocalStorage(base64Image);
+                };
             });
+        }
 
-            // Action Button modifications
-            if (currentStep === 1) {
-                prevBtn.classList.add('hidden');
-            } else {
-                prevBtn.classList.remove('hidden');
+        // Progress Simulation Tracker
+        function simulateProgress(onComplete) {
+            let progress = 0;
+            progressBarFill.style.width = '0%';
+            progressPercent.textContent = `Uploading... 0%`;
+
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBarFill.style.width = `${progress}%`;
+                progressPercent.textContent = `Uploading... ${progress}%`;
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressPercent.innerHTML = `100% Success <i class="fa-solid fa-circle-check text-emerald-400"></i>`;
+                        onComplete();
+                    }, 200);
+                }
+            }, 100); // Fast professional loading simulation
+        }
+
+        // LocalStorage System
+        function saveToLocalStorage(base64Str) {
+            let images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+            images.push(base64Str);
+            localStorage.setItem('uploadedImages', JSON.stringify(images));
+            loadGallery();
+        }
+
+        function loadGallery() {
+            galleryGrid.innerHTML = '';
+            let images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+
+            if (images.length === 0) {
+                galleryPlaceholder.classList.remove('hidden');
+                return;
             }
+            galleryPlaceholder.classList.add('hidden');
 
-            if (currentStep === totalSteps) {
-                nextBtn.innerHTML = 'Submit 🚀';
-                nextBtn.classList.replace('bg-blue-600', 'bg-emerald-600');
-                nextBtn.classList.replace('hover:bg-blue-700', 'hover:bg-emerald-700');
-            } else {
-                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right text-xs"></i>';
-                nextBtn.classList.replace('bg-emerald-600', 'bg-blue-600');
-                nextBtn.classList.replace('hover:bg-emerald-700', 'hover:bg-blue-700');
-            }
-
-            // Top Header Visual States Progression handling
-            const indicators = document.querySelectorAll('.step-indicator');
-            indicators.forEach((indicator, index) => {
-                const stepNum = index + 1;
-                const circle = indicator.querySelector('.circle-num');
-                
-                if (stepNum < currentStep) {
-                    // Complete state styling
-                    indicator.classList.remove('opacity-60');
-                    indicator.innerHTML = `<span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold"><i class="fas fa-check text-[10px]"></i></span>` + indicator.innerHTML.substring(indicator.innerHTML.indexOf('</span>') + 7);
-                } else if (stepNum === currentStep) {
-                    // Current step active indicator
-                    indicator.classList.remove('opacity-60');
-                    indicator.classList.add('border-blue-500', 'ring-2', 'ring-blue-100');
-                } else {
-                    // Locked future steps styling
-                    indicator.classList.add('opacity-60');
-                    indicator.classList.remove('border-blue-500', 'ring-2', 'ring-blue-100');
-                }
+            images.forEach((imgSrc, index) => {
+                const item = document.createElement('div');
+                item.className = 'relative aspect-square rounded-lg overflow-hidden border border-slate-800 bg-slate-950 group/item shadow-inner';
+                item.innerHTML = `
+                    <img src="${imgSrc}" class="w-full h-full object-cover">
+                    <button onclick="deleteImage(${index})" class="absolute top-1 right-1 bg-rose-600/80 hover:bg-rose-600 text-white w-5 h-5 rounded-md flex items-center justify-center text-[10px] opacity-0 group-hover/item:opacity-100 transition-opacity duration-200 shadow">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                galleryGrid.appendChild(item);
             });
-
-            // Set progress indicator filler line
-            const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            document.getElementById('progress-line').style.width = `${progressPercent}%`;
         }
 
-        // Autosave Feature Implementation using LocalStorage
-        const allInputs = document.querySelectorAll('.input-field');
-        allInputs.forEach(input => {
-            input.addEventListener('input', () => {
-                saveProgress();
-            });
-        });
-
-        function saveProgress() {
-            const formData = {};
-            allInputs.forEach(input => {
-                formData[input.id] = input.value;
-            });
-            formData['currentStep'] = currentStep;
-
-            localStorage.setItem('multiStepFormDraft', JSON.stringify(formData));
-            
-            // Render exact dynamic saved time notation string matching the bottom footer info reference
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            autosaveStatus.textContent = `Draft saved locally at ${timeString}`;
+        function deleteImage(index) {
+            let images = JSON.parse(localStorage.getItem('uploadedImages')) || [];
+            images.splice(index, 1);
+            localStorage.setItem('uploadedImages', JSON.stringify(images));
+            loadGallery();
         }
 
-        function loadSavedProgress() {
-            const savedData = localStorage.getItem('multiStepFormDraft');
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-                allInputs.forEach(input => {
-                    if (formData[input.id] !== undefined) {
-                        input.value = formData[input.id];
-                    }
-                });
-                if(formData['currentStep']) {
-                    currentStep = formData['currentStep'];
-                }
-                // Check birthday state indicator status upon loading page data 
-                if(birthdayInput.value) {
-                    birthdayValid.classList.remove('hidden');
-                }
-                autosaveStatus.textContent = `Loaded draft progress securely`;
+        function clearAllPhotos() {
+            if (confirm("Are you sure you want to clear your local storage gallery?")) {
+                localStorage.removeItem('uploadedImages');
+                loadGallery();
             }
         }
+
+        // UI Helpers
+        function showError(msg) {
+            errorText.textContent = msg;
+            errorBox.classList.remove('hidden');
+        }
+
+        function closeError() {
+            hideError();
+        }
+
+        function hideError() {
+            errorBox.classList.add('hidden');
+        }
+
+        // Initial Load Event for Persistence Challenge
+        window.addEventListener('DOMContentLoaded', loadGallery);
     </script>
-
-    <!-- Tailwind Shake Animation injection styling configuration plugin setup -->
-    <style>
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
-        .animate-shake {
-            animation: shake 0.3s ease-in-out infinite;
-        }
-    </style>
 </body>
 </html>
